@@ -1,3 +1,4 @@
+# Would you rather have unlimited games but no bacon or unlimited games but no games?
 # RPS Code
 def rps():
   pass
