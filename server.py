@@ -33,6 +33,8 @@ async def server_select(client, tasks):
             tasks.add(task)
             await co_send(bytes("You chose C4|send"), client)
             break
+        else:
+            msg = b"Invalid Option, choose a service: \n1 RPS \n2 TTT \n3 C4"
 
 async def serve_RPS(client):
     while True:
