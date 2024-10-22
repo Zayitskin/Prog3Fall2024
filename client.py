@@ -9,10 +9,12 @@ def server_connect():
         print(f"Server found. Connecting to {ADDR}:{PORT}")
         send = b""
         while send != b"close":
-            recv = sock.recv(1024)
-            print(recv.decode(encoding="UTF-8"))
-            send = bytes(input("Input: "), encoding="UTF-8")
-            sock.send(send)
+            recv = sock.recv(1024).decode(encoding="UTF-8")
+            recv = recv.split("|")
+            data, command = recv[0], recv[1]
+            if command == "send":
+                send = bytes(input("Input: "), encoding="UTF-8")
+                sock.send(send)
 
 if __name__ == "__main__":
     server_connect()
