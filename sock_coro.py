@@ -11,7 +11,7 @@ async def co_accept(sock: socket.socket) -> tuple[socket.socket, str]:
         except BlockingIOError:
             await asyncio.sleep(0)
 
-async def co_send(sock: socket.socket, data: bytes) -> int:
+async def co_send(data: bytes, sock: socket.socket) -> int:
 
     while True:
         try:

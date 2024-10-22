@@ -7,7 +7,7 @@ from sock_coro import co_recv
 from sock_coro import co_send
 
 ADDR = "127.0.0.1"
-PORT = 1234
+PORT = 1235
 
 async def server_select(client, tasks):
     msg = b"Choose a service:"
