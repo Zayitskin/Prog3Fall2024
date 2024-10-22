@@ -11,7 +11,11 @@ def server_connect():
         while send != b"close":
             recv = sock.recv(1024).decode(encoding="UTF-8")
             recv = recv.split("|")
-            data, command = recv[0], recv[1]
+            if len(recv) == 2:
+                data, command = recv[0], recv[1]
+            elif len(recv) == 1:
+                data = recv[0]
+                command = "send"
             if command == "send":
                 send = bytes(input("Input: "), encoding="UTF-8")
                 sock.send(send)
