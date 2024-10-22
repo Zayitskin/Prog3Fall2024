@@ -24,7 +24,7 @@ def rps(p1,p2):
       return "draw"
 # TTT Code
 def ttt():
-  board = '''
+  board = f'''
      |     |     
   -  |  -  |  -  
 _____|_____|_____
@@ -36,7 +36,7 @@ _____|_____|_____
      |     |   
   '''
   while True:
-
+    p1 = input('player 1 move: ')
     pass
 # C4 Code
 def connect():
