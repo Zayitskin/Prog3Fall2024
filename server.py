@@ -13,7 +13,7 @@ async def server_select(client, tasks):
     msg = b"Choose a service:"
     while True:
         await co_send(b"Choose a service: \n1 RPS \n2 TTT \n3 C4|send", client)
-        response = await co_recv(client)
+        response = await co_recv(1024, client)
         print(response.decode(encoding="UTF-8"))
         if response == b"1":
             task: asyncio.Task = asyncio.create_task(serve_RPS(client))
@@ -38,7 +38,7 @@ async def server_select(client, tasks):
 
 async def serve_RPS(client):
     while True:
-        data = await co_recv(client, 1024)
+        data = await co_recv(1024, client)
         print(f"Received {data} from {client}, RPS")
         await co_send(f"{data}|send", client)
         if data == "close":
@@ -46,7 +46,7 @@ async def serve_RPS(client):
 
 async def serve_TTT(client):
     while True:
-        data = await co_recv(client, 1024)
+        data = await co_recv(1024, client)
         print(f"Received {data} from {client}, TTT")
         await co_send(f"{data}|send", client)
         if data == "close":
@@ -54,7 +54,7 @@ async def serve_TTT(client):
 
 async def serve_C4(client):
     while True:
-        data = await co_recv(client, 1024)
+        data = await co_recv(1024, client)
         print(f"Received {data} from {client}, C4")
         await co_send(f"{data}|send", client)
         if data == "close":
