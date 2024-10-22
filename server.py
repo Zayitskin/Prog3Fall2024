@@ -61,7 +61,7 @@ async def serve_C4(client):
             break
 
 async def main():
-    tasks= set()
+    tasks = set()
     with socket.socket() as sock:
         sock.settimeout(0)
         sock.bind((ADDR, PORT))
