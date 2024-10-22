@@ -7,7 +7,7 @@ from sock_coro import co_recv
 from sock_coro import co_send
 
 ADDR = "127.0.0.1"
-PORT = 1235
+PORT = 1234
 
 async def server_select(client, tasks):
     msg = b"Choose a service:"
@@ -40,7 +40,7 @@ async def serve_RPS(client):
     while True:
         data = await co_recv(1024, client)
         print(f"Received {data} from {client}, RPS")
-        await co_send(f"{bytes(data, encoding="UTF-8")}|send", client)
+        await co_send(bytes(f"{data}|send",encoding="UTF-8"), client)
         if data == "close":
             break
 
@@ -48,7 +48,7 @@ async def serve_TTT(client):
     while True:
         data = await co_recv(1024, client)
         print(f"Received {data} from {client}, TTT")
-        await co_send(f"{bytes(data, encoding="UTF-8")}|send", client)
+        await co_send(bytes(f"{data}|send",encoding="UTF-8"), client)
         if data == "close":
             break
 
@@ -56,7 +56,7 @@ async def serve_C4(client):
     while True:
         data = await co_recv(1024, client)
         print(f"Received {data} from {client}, C4")
-        await co_send(f"{bytes(data, encoding="UTF-8")}|send", client)
+        await co_send(bytes(f"{data}|send",encoding="UTF-8"), client)
         if data == "close":
             break
 
