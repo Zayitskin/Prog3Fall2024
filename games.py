@@ -24,7 +24,7 @@ def rps(p1,p2):
       return "draw"
 # TTT Code
 def ttt():
-  board = f'''
+  board = '''
      |     |     
   -  |  -  |  -  
 _____|_____|_____
