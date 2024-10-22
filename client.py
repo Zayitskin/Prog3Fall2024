@@ -16,6 +16,7 @@ def server_connect():
             elif len(recv) == 1:
                 data = recv[0]
                 command = "send"
+            print(data)
             if command == "send":
                 send = bytes(input("Input: "), encoding="UTF-8")
                 sock.send(send)
