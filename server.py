@@ -27,7 +27,7 @@ async def server_select(client, tasks):
             tasks.add(task)
             await co_send(bytes("You chose TTT|send"), client)
             break
-        elif response = b"3":
+        elif response == b"3":
             task: asyncio.Task = asyncio.create_task(serve_C4(client))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
