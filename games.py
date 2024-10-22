@@ -4,7 +4,20 @@ def rps():
   pass
 # TTT Code
 def ttt():
-  pass
+  board = '''
+     |     |     
+  -  |  -  |  -  
+_____|_____|_____
+     |     |     
+  -  |  -  |  -  
+_____|_____|_____
+     |     |     
+  -  |  -  |  -  
+     |     |   
+  '''
+  while True:
+
+    pass
 # C4 Code
 def connect():
   pass
