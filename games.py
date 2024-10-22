@@ -1,4 +1,4 @@
-# Would you rather have unlimited games but no bacon or unlimited games but no games?
+# Would you rather have unlimited games but no bacon or games, unlimited games but no games?
 # RPS Code
 def rps(p1,p2):
   if p1=="rock":
