@@ -40,7 +40,7 @@ async def serve_RPS(client):
     while True:
         data = await co_recv(1024, client)
         print(f"Received {data} from {client}, RPS")
-        await co_send(f"{data}|send", client)
+        await co_send(bytes(f"{data}|send", encoding='UTF-8'), client)
         if data == "close":
             break
 
@@ -48,7 +48,7 @@ async def serve_TTT(client):
     while True:
         data = await co_recv(1024, client)
         print(f"Received {data} from {client}, TTT")
-        await co_send(f"{data}|send", client)
+        await co_send(bytes(f"{data}|send", encoding='UTF-8'), client)
         if data == "close":
             break
 
@@ -56,7 +56,7 @@ async def serve_C4(client):
     while True:
         data = await co_recv(1024, client)
         print(f"Received {data} from {client}, C4")
-        await co_send(f"{data}|send", client)
+        await co_send(bytes(f"{data}|send", encoding='UTF-8'), client)
         if data == "close":
             break
 
