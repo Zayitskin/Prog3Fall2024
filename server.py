@@ -31,7 +31,7 @@ async def server_select(client, tasks):
             task: asyncio.Task = asyncio.create_task(serve_C4(client))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
-            await co_send(bytes("You chose TTT|send"), client)
+            await co_send(bytes("You chose C4|send"), client)
             break
 
 async def serve_RPS(client):
