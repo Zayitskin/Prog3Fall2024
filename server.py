@@ -19,26 +19,26 @@ async def server_select(client, tasks):
             task: asyncio.Task = asyncio.create_task(serve_RPS(client))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
-            await co_send(bytes("You chose RPS|send"), client)
+            await co_send(bytes("You chose RPS|send", encoding="UTF-8"), client)
             break
         elif response == b"2":
             task: asyncio.Task = asyncio.create_task(serve_TTT(client))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
-            await co_send(bytes("You chose TTT|send"), client)
+            await co_send(bytes("You chose TTT|send", encoding="UTF-8"), client)
             break
         elif response == b"3":
             task: asyncio.Task = asyncio.create_task(serve_C4(client))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
-            await co_send(bytes("You chose C4|send"), client)
+            await co_send(bytes("You chose C4|send", encoding="UTF-8"), client)
             break
         else:
             msg = b"Invalid Option, choose a service: \n1 RPS \n2 TTT \n3 C4"
 
 async def serve_RPS(client):
     while True:
-        data = await co_recv(client)
+        data = await co_recv(client, 1024)
         print(f"Received {data} from {client}, RPS")
         await co_send(f"{data}|send", client)
         if data == "close":
@@ -46,7 +46,7 @@ async def serve_RPS(client):
 
 async def serve_TTT(client):
     while True:
-        data = await co_recv(client)
+        data = await co_recv(client, 1024)
         print(f"Received {data} from {client}, TTT")
         await co_send(f"{data}|send", client)
         if data == "close":
@@ -54,7 +54,7 @@ async def serve_TTT(client):
 
 async def serve_C4(client):
     while True:
-        data = await co_recv(client)
+        data = await co_recv(client, 1024)
         print(f"Received {data} from {client}, C4")
         await co_send(f"{data}|send", client)
         if data == "close":
