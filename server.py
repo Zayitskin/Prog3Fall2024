@@ -7,7 +7,7 @@ from sock_coro import co_recv
 from sock_coro import co_send
 
 ADDR = "127.0.0.1"
-PORT = 1235
+PORT = 1234
 
 async def server_select(client, tasks):
     msg = b"Choose a service:"
@@ -19,19 +19,19 @@ async def server_select(client, tasks):
             task: asyncio.Task = asyncio.create_task(serve_RPS(client))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
-            await co_send(bytes("You chose RPS|send", encoding="UTF-8"), client)
+            await co_send(b"You chose RPS|send", client)
             break
         elif response == b"2":
             task: asyncio.Task = asyncio.create_task(serve_TTT(client))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
-            await co_send(bytes("You chose TTT|send", encoding="UTF-8"), client)
+            await co_send(b"You chose TTT|send", client)
             break
         elif response == b"3":
             task: asyncio.Task = asyncio.create_task(serve_C4(client))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
-            await co_send(bytes("You chose C4|send", encoding="UTF-8"), client)
+            await co_send(b"You chose C4|send", client)
             break
         else:
             msg = b"Invalid Option, choose a service: \n1 RPS \n2 TTT \n3 C4"
@@ -40,7 +40,7 @@ async def serve_RPS(client):
     while True:
         data = await co_recv(1024, client)
         print(f"Received {data} from {client}, RPS")
-        await co_send(bytes(f"{data}|send", encoding='UTF-8'), client)
+        await co_send(bytes(f"{data}|send",encoding="UTF-8"), client)
         if data == "close":
             break
 
@@ -48,7 +48,7 @@ async def serve_TTT(client):
     while True:
         data = await co_recv(1024, client)
         print(f"Received {data} from {client}, TTT")
-        await co_send(bytes(f"{data}|send", encoding='UTF-8'), client)
+        await co_send(bytes(f"{data}|send",encoding="UTF-8"), client)
         if data == "close":
             break
 
@@ -56,7 +56,7 @@ async def serve_C4(client):
     while True:
         data = await co_recv(1024, client)
         print(f"Received {data} from {client}, C4")
-        await co_send(bytes(f"{data}|send", encoding='UTF-8'), client)
+        await co_send(bytes(f"{data}|send",encoding="UTF-8"), client)
         if data == "close":
             break
 
