@@ -19,7 +19,7 @@ async def co_send(data: bytes, sock: socket.socket) -> int:
         except BlockingIOError:
             await asyncio.sleep(0)
 
-async def co_recv(sock: socket.socket, size: int) -> bytes:
+async def co_recv(size: int, sock: socket.socket) -> bytes:
 
     while True:
         try:
