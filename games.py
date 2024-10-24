@@ -121,4 +121,4 @@ def connect():
 
 # Whisper Down the Valley
 def wdtv():
-  pass
+  initial_message = input('original word or phrase: ')
