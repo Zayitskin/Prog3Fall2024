@@ -3,6 +3,8 @@ import asyncio
 import socket
 
 from games import rps
+from games import ttt
+from games import connect
 
 from sock_coro import co_accept
 from sock_coro import co_recv
