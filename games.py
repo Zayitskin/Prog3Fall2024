@@ -115,7 +115,11 @@ def ttt():
     if is_win(state):
       print('You win :)\n')
       break
-    
+
 # C4 Code
 def connect():
+  pass
+
+# Whisper Down the Valley
+def wdtv():
   pass
