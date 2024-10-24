@@ -1,4 +1,5 @@
 # Would you rather have unlimited games but no bacon or games, unlimited games but no games?
+
 # RPS Code
 def rps(p1,p2):
   if p1=="rock":
@@ -22,11 +23,9 @@ def rps(p1,p2):
       return "Player 1 wins"
     elif p2=="scissors":
       return "draw"
+    
 # TTT Code
 def ttt():
-  # games AI
-# model the board
-
   LAYOUT =  '_' * 9
 
   def get_next_states(layout, val):
