@@ -14,9 +14,9 @@ ADDR = "127.0.0.1"
 PORT = 1234
 
 async def server_select(client, tasks):
-    msg = b"Choose a service:"
+    msg = b"Choose a service: \n1 RPS \n2 TTT \n3 C4|send"
     while True:
-        await co_send(b"Choose a service: \n1 RPS \n2 TTT \n3 C4|send", client)
+        await co_send(msg, client)
         response = await co_recv(1024, client)
         print(response.decode(encoding="UTF-8"))
         if response == b"1":
