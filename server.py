@@ -1,6 +1,8 @@
-
+import random
 import asyncio
 import socket
+
+from games import rps
 
 from sock_coro import co_accept
 from sock_coro import co_recv
@@ -40,7 +42,9 @@ async def serve_RPS(client):
     while True:
         data = await co_recv(1024, client)
         print(f"Received {data} from {client}, RPS")
-        await co_send(bytes(f"{data}|send",encoding="UTF-8"), client)
+        options = ['rock', 'paper', 'scissors']
+        result = rps(data.decode(encoding="UTF-8"), options[random.randint(0,2)])
+        await co_send(bytes(f"{result}|send",encoding="UTF-8"), client)
         if data == "close":
             break
 
