@@ -116,8 +116,27 @@ def ttt():
       break
 
 # C4 Code
-def connect():
-  pass
+def connect(board, data, player):
+  board.reverse()
+  new_board = [[],[],[],[],[]]
+  for i in range(len(board[0])):
+    for c in board:
+      new_board[i].append(c[i])
+  board = new_board
+  print(board, new_board)
+  data = int(data.decode(encoding="UTF-8"))-1
+  column = board[data]
+  for space in range(len(column)):
+    if column[space] == "_":
+      column[space] = player
+      break
+  print(board)
+  new_board = [[],[],[],[],[]]
+  for i in range(len(board[0])):
+    for c in board:
+      new_board[i].append(c[i])
+  new_board.reverse()
+  return new_board
 
 # Whisper Down the Valley
 def wdtv():

@@ -59,12 +59,26 @@ async def serve_TTT(client):
             break
 
 async def serve_C4(client):
+    board = [
+    ['_', '_', '_', '_', '_'],
+    ['_', '_', '_', '_', '_'], 
+    ['_', '_', '_', '_', '_'],
+    ['_', '_', '_', '_', '_'],
+    ['_', '_', '_', '_', '_']
+    ]
     while True:
         data = await co_recv(1024, client)
         print(f"Received {data} from {client}, C4")
-        await co_send(bytes(f"{data}|send",encoding="UTF-8"), client)
+        state = connect(board, data, 'r')
+        for c in range(len(state)):
+            if c != len(state)-1:
+                await co_send(bytes(f"{state[c]}|wait",encoding="UTF-8"), client)
+                await asyncio.sleep(0.001)
+            else:
+                await co_send(bytes(f"{state[c]}|send",encoding="UTF-8"), client)
         if data == "close":
             break
+        board = state
 
 async def main():
     tasks = set()
