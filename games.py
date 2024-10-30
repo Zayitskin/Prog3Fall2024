@@ -147,14 +147,14 @@ def anagram(input):
     i = random.randint(0, len(input) - 1)
     output += input[i]
     input = input[:i] + input[i+1:]
-    return output
+  return output
 
 def shift(input):
   output = ''
   for _ in range(0, len(input)):
       i = random.randint(0, len(input) - 1)
       output = output[:i] + chr(random.randint(97, 122)) + output[i+1:]
-      return output
+  return output
 
 def wdtv(input, mode):
   output = []
