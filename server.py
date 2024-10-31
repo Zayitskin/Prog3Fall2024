@@ -12,6 +12,7 @@ from sock_coro import co_send
 
 ADDR = "127.0.0.1"
 PORT = 1234
+clients = {}
 
 async def server_select(client, tasks):
     msg = b"Choose a service: \n1 RPS \n2 TTT \n3 C4|send"
@@ -69,7 +70,7 @@ async def serve_C4(client):
     while True:
         data = await co_recv(1024, client)
         print(f"Received {data} from {client}, C4")
-        state = connect(board, data, 'r')
+        state = connect(board, data, clients.get(client))
         for c in range(len(state)):
             if c != len(state)-1:
                 await co_send(bytes(f"{state[c]}|wait",encoding="UTF-8"), client)
@@ -89,6 +90,7 @@ async def main():
         print(f"Server listening on {ADDR}:{PORT}")
         while True:
             client, addr = await co_accept(sock)
+            clients[client] = len(clients)
             print(f"connected to {addr}")
             task: asyncio.Task = asyncio.create_task(server_select(client, tasks))
             task.add_done_callback(tasks.discard)
