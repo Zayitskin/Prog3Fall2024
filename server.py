@@ -14,6 +14,14 @@ ADDR = "127.0.0.1"
 PORT = 1234
 clients = {}
 
+board = [
+    ['_', '_', '_', '_', '_'],
+    ['_', '_', '_', '_', '_'], 
+    ['_', '_', '_', '_', '_'],
+    ['_', '_', '_', '_', '_'],
+    ['_', '_', '_', '_', '_']
+    ]
+
 async def server_select(client, tasks):
     msg = b"Choose a service: \n1 RPS \n2 TTT \n3 C4|send"
     while True:
@@ -60,13 +68,7 @@ async def serve_TTT(client):
             break
 
 async def serve_C4(client):
-    board = [
-    ['_', '_', '_', '_', '_'],
-    ['_', '_', '_', '_', '_'], 
-    ['_', '_', '_', '_', '_'],
-    ['_', '_', '_', '_', '_'],
-    ['_', '_', '_', '_', '_']
-    ]
+    global board
     while True:
         data = await co_recv(1024, client)
         print(f"Received {data} from {client}, C4")
