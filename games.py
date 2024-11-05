@@ -69,8 +69,55 @@ def ttt(board, move, number):
     else:
       return False, board, number
 
+def connect(board, data, player):
+  board.reverse()
+  new_board = [[],[],[],[],[]]
+  for i in range(len(board[0])):
+    for c in board:
+      new_board[i].append(c[i])
+  board = new_board
+  print(board, new_board)
+  data = int(data.decode(encoding="UTF-8"))-1
+  column = board[data]
+  for space in range(len(column)):
+    if column[space] == "_":
+      column[space] = player
+      break
+  print(board)
+  new_board = [[],[],[],[],[]]
+  for i in range(len(board[0])):
+    for c in board:
+      new_board[i].append(c[i])
+  new_board.reverse()
+  return new_board
 
-    
-# C4 Code
-def connect():
-  pass 
+# Whisper Down the Valley
+def anagram(input):
+  output = ''
+  for _ in range(0, len(input)):
+    i = random.randint(0, len(input) - 1)
+    output += input[i]
+    input = input[:i] + input[i+1:]
+  return output
+
+def shift(input):
+  output = ''
+  for _ in range(0, len(input)):
+      i = random.randint(0, len(input) - 1)
+      output = output[:i] + chr(random.randint(97, 122)) + output[i+1:]
+  return output
+
+def wdtv(input, mode):
+  output = []
+  input = input.lower()
+  words = input.split()
+  if mode == 0:
+    for w in words:
+      output.append(anagram(w))
+  if mode == 1:
+    for w in words:
+      output.append(shift(w))
+  return output
+
+#print(wdtv('long ago, the four nations lived together in harmony. then, everything changed when the fire nation attacked. only the avatar, master of all four elements could stop them, but when the world needed him most, he vanished. one hundred years passed, and my brother and i found the new avatar, an airbender named aang. and although his airbending skills are great, he has a lot to learn before he can save anyone. but i believe, aang can save the world.', 0))
+#print(wdtv('long ago, the four nations lived together in harmony. then, everything changed when the fire nation attacked. only the avatar, master of all four elements could stop them, but when the world needed him most, he vanished. one hundred years passed, and my brother and i found the new avatar, an airbender named aang. and although his airbending skills are great, he has a lot to learn before he can save anyone. but i believe, aang can save the world.', 1))
