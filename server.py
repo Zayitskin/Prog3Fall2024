@@ -91,8 +91,13 @@ async def serve_TTT(client1, client2):
 
 async def serve_C4(client):
     global board
+    print([x+1 for x in range(len(board))])
     while True:
-        data = await co_recv(1024, client)
+        while True:
+            data = await co_recv(1024, client)
+            if data in [str(x+1).encode(encoding="UTF-8") for x in range(len(board))]:
+                break
+            await co_send(b"Enter a valid column|send", client)
         print(f"Received {data} from {client}, C4")
         state = connect(board, data, clients.get(client))
         for c in range(len(state)):

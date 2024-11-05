@@ -20,8 +20,11 @@ def server_connect():
                 command = "send"
             print(data)
             if command == "send":
-                send = bytes(input("Input: "), encoding="UTF-8")
-                sock.send(send)
+                while True:
+                    send = bytes(input("Input: "), encoding="UTF-8")
+                    if send:
+                        sock.send(send)
+                    print("Enter something. Anything at all. Please. I crave inputs.")
             elif command == "print ttt":
                 print_ttt(data)
 
