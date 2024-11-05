@@ -102,22 +102,34 @@ def anagram(input):
 
 def shift(input):
   output = ''
-  for _ in range(0, len(input)):
-      i = random.randint(0, len(input) - 1)
-      output = output[:i] + chr(random.randint(97, 122)) + output[i+1:]
+  for l in input:
+      vowels = ['a', 'e', 'i', 'o', 'u']
+      i = random.randint(0, 1)
+      if i == 0:
+        if l in vowels:
+          vowels.remove(l)
+          l = random.choice(vowels)
+        else:
+          while True:
+            l = chr((ord(l) - 96) % 26 + 97)
+            if l not in vowels:
+              break
+      output += l
   return output
 
 def wdtv(input, mode):
-  output = []
+  output = ''
   input = input.lower()
   words = input.split()
   if mode == 0:
     for w in words:
-      output.append(anagram(w))
+      output += anagram(w)
+      output += ' '
   if mode == 1:
     for w in words:
-      output.append(shift(w))
+      output += shift(w)
+      output += ' '
   return output
 
-#print(wdtv('long ago, the four nations lived together in harmony. then, everything changed when the fire nation attacked. only the avatar, master of all four elements could stop them, but when the world needed him most, he vanished. one hundred years passed, and my brother and i found the new avatar, an airbender named aang. and although his airbending skills are great, he has a lot to learn before he can save anyone. but i believe, aang can save the world.', 0))
-#print(wdtv('long ago, the four nations lived together in harmony. then, everything changed when the fire nation attacked. only the avatar, master of all four elements could stop them, but when the world needed him most, he vanished. one hundred years passed, and my brother and i found the new avatar, an airbender named aang. and although his airbending skills are great, he has a lot to learn before he can save anyone. but i believe, aang can save the world.', 1))
+# print(wdtv('hello world', 0))
+# print(wdtv('hello world', 1))
