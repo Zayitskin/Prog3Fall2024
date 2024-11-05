@@ -91,7 +91,6 @@ async def serve_TTT(client1, client2):
 
 async def serve_C4(client):
     global board
-    print([x+1 for x in range(len(board))])
     while True:
         while True:
             data = await co_recv(1024, client)
