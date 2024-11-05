@@ -59,11 +59,33 @@ async def serve_RPS(client):
         if data == "close":
             break
 
-async def serve_TTT(client):
+async def serve_TTT(client1, client2):
     while True:
-        data = await co_recv(1024, client)
-        print(f"Received {data} from {client}, TTT")
-        await co_send(bytes(f"{data}|send",encoding="UTF-8"), client)
+        board = "_" * 9
+        end = False
+        counter = 0
+        while not end:
+            if counter % 2 == 0:
+              current_client = client1 
+            else:
+                current_client = client2
+                data = await co_recv(1024, current_client)
+                print(f"Received {data} from {current_client}, TTT")
+                await co_send(bytes(f"{board}| print ttt",encoding="UTF-8"), current_client)
+                move = await co_send(bytes(f"Choose your move|send",encoding="UTF-8"), current_client)
+                print(f"Received {data} from {current_client}, TTT")
+                stats = ttt(board, move, counter)
+                if stats[0]:
+                    if counter % 2 == 0:
+                        winner = client1 
+                        loser = client2 
+                    else:
+                        winner = client2
+                        loser = client1 
+                    await co_send(bytes(f"You won :)",encoding="UTF-8"), winner)
+                    await co_send(bytes(f"You Lost :(",encoding="UTF-8"), loser)
+                    end = True
+                counter += 1
         if data == "close":
             break
 

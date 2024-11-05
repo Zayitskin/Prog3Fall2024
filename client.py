@@ -1,5 +1,7 @@
 import socket
 
+from games import print_ttt
+
 ADDR = "127.0.0.1"
 PORT = 1234
 
@@ -20,6 +22,8 @@ def server_connect():
             if command == "send":
                 send = bytes(input("Input: "), encoding="UTF-8")
                 sock.send(send)
+            elif command == "print ttt":
+                print_ttt(data)
 
 if __name__ == "__main__":
     server_connect()
