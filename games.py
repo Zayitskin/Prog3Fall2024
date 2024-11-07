@@ -28,10 +28,10 @@ def rps(p1,p2):
   elif p1-p2>=(len(choices)-1)/2:
     return "Player 1 wins"
 
-p1=input("p1 choose somthing?")
-os.system("clear")
-p2=input("p2 choose another something?")
-print(f"Player 1 chose {p1}\n"+f"Player 2 chose {p2}\n"+str(rps(p1,p2)))
+# p1=input("p1 choose somthing?")
+# os.system("clear")
+# p2=input("p2 choose another something?")
+# print(f"Player 1 chose {p1}\n"+f"Player 2 chose {p2}\n"+str(rps(p1,p2)))
     
 # TTT Code
 
