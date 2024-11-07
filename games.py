@@ -134,13 +134,13 @@ def wdtv(mode, inp):
       output += ' '
     print('\n' * 100)
     print(output)
-    wdtv(input('guess: '), mode)
+    wdtv(mode, input('guess: '))
   if mode == 1:
     for w in words:
       output += shift(w)
       output += ' '
     print('\n' * 100)
     print(output)
-    wdtv(input('guess: '), mode)
+    wdtv(mode, input('guess: '))
 
 wdtv(int(input('type 0 for anagram mode or 1 for shift mode: ')), input('type a word or phrase: '))
