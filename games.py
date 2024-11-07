@@ -124,7 +124,7 @@ def shift(input):
       output += l
   return output
 
-def wdtv(inp, mode):
+def wdtv(mode, inp):
   output = ''
   inp = inp.lower()
   words = inp.split()
@@ -132,13 +132,15 @@ def wdtv(inp, mode):
     for w in words:
       output += anagram(w)
       output += ' '
+    print('\n' * 100)
     print(output)
     wdtv(input('guess: '), mode)
   if mode == 1:
     for w in words:
       output += shift(w)
       output += ' '
+    print('\n' * 100)
     print(output)
     wdtv(input('guess: '), mode)
 
-wdtv(input('type a word or phrase: '), int(input('type 0 for anagram mode or 1 for shift mode: ')))
+wdtv(int(input('type 0 for anagram mode or 1 for shift mode: ')), input('type a word or phrase: '))
