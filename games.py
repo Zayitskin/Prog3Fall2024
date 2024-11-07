@@ -3,28 +3,35 @@
 import random
 
 # RPS Code
+import os
 def rps(p1,p2):
-  if p1=="rock":
-    if p2=="rock":
-      return "draw"
-    elif p2=="paper":
-      return "Player 2 wins"
-    elif p2=="scissors":
-      return "Player 1 wins"
-  elif p1=="paper":
-    if p2=="rock":
-      return "Player 1 wins"
-    elif p2=="paper":
-      return "draw"
-    elif p2=="scissors":
-      return "Player 1 wins"
-  elif p1=="scissors":
-    if p2=="rock":
-      return "Player 2 wins"
-    elif p2=="paper":
-      return "Player 1 wins"
-    elif p2=="scissors":
-      return "draw"
+  choices=["rock","gun","lightning","devil","dragon","water","air","paper","spounge","wolf","tree","human","snake","scissors","fire"]
+  # choices=["r","g","l","d","dr","w","a","p","sp","wo","t","h","sn","s","f"]
+  if p1 not in choices and p2 not in choices:
+    return "Not a valid option"
+  for chip in range(len(choices)):
+    # print(p1,p2,chip,choices[chip])
+    if p1==choices[chip]:
+      p1=chip
+    if p2==choices[chip]:
+      p2=chip
+  # print(p1,p2,(p1-p2),len(choices))
+  if p1+1<len(choices)-1 and p2+1>len(choices)-((len(choices)-1)/2-p1):
+    return "Player 1 wins"
+  elif p2+1<len(choices)-1 and p1+1>len(choices)-((len(choices)-1)/2-p2):
+    return "Player 2 wins"
+
+  if p1==p2:
+    return "Draw"
+  elif p2-p1>=(len(choices)-1)/2:
+    return "Player 2 wins"
+  elif p1-p2>=(len(choices)-1)/2:
+    return "Player 1 wins"
+
+p1=input("p1 choose somthing?")
+os.system("clear")
+p2=input("p2 choose another something?")
+print(f"Player 1 chose {p1}\n"+f"Player 2 chose {p2}\n"+str(rps(p1,p2)))
     
 # TTT Code
 

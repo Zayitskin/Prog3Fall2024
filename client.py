@@ -24,6 +24,7 @@ def server_connect():
                     send = bytes(input("Input: "), encoding="UTF-8")
                     if send:
                         sock.send(send)
+                        break
                     print("Enter something. Anything at all. Please. I crave inputs.")
             elif command == "print ttt":
                 print_ttt(data)
