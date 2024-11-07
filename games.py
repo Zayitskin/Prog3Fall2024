@@ -118,7 +118,7 @@ def shift(input):
           l = random.choice(vowels)
         else:
           while True:
-            l = chr((ord(l) - 96) % 26 + 97)
+            l = chr(random.randint(97, 122))
             if l not in vowels:
               break
       output += l
