@@ -15,11 +15,12 @@ PORT = 1234
 clients = {}
 
 board = [
-    ['_', '_', '_', '_', '_'],
-    ['_', '_', '_', '_', '_'], 
-    ['_', '_', '_', '_', '_'],
-    ['_', '_', '_', '_', '_'],
-    ['_', '_', '_', '_', '_']
+    '_', '_', '_', '_', '_', '_', '_',
+    '_', '_', '_', '_', '_', '_', '_',
+    '_', '_', '_', '_', '_', '_', '_',
+    '_', '_', '_', '_', '_', '_', '_',
+    '_', '_', '_', '_', '_', '_', '_',
+    '_', '_', '_', '_', '_', '_', '_'
     ]
 
 async def server_select(client, tasks):
@@ -99,12 +100,13 @@ async def serve_C4(client):
             await co_send(b"Enter a valid column|send", client)
         print(f"Received {data} from {client}, C4")
         state = connect(board, data, clients.get(client))
-        for c in range(len(state)):
-            if c != len(state)-1:
-                await co_send(bytes(f"{state[c]}|wait",encoding="UTF-8"), client)
-                await asyncio.sleep(0.001)
-            else:
-                await co_send(bytes(f"{state[c]}|send",encoding="UTF-8"), client)
+        row = ""
+        for i in range(len(board)):
+            row += board[i]
+            if (i+1) % 7 == 0:
+                print(row)
+                print(i)
+                row = ""
         if data == "close":
             break
         board = state
