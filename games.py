@@ -143,4 +143,4 @@ def wdtv(mode, inp):
     print(output)
     wdtv(mode, input('guess: '))
 
-wdtv(int(input('type 0 for anagram mode or 1 for shift mode: ')), input('type a word or phrase: '))
+# wdtv(int(input('type 0 for anagram mode or 1 for shift mode: ')), input('type a word or phrase: '))
