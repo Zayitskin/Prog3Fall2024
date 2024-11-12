@@ -14,7 +14,7 @@ ADDR = "127.0.0.1"
 PORT = 1234
 clients = {}
 
-board = [
+global_board = [
     '_', '_', '_', '_', '_', '_', '_',
     '_', '_', '_', '_', '_', '_', '_',
     '_', '_', '_', '_', '_', '_', '_',
@@ -91,25 +91,30 @@ async def serve_TTT(client1, client2):
             break
 
 async def serve_C4(client):
-    global board
+    global global_board
+    board = list(global_board)
     while True:
         while True:
             data = await co_recv(1024, client)
-            if data in [str(x+1).encode(encoding="UTF-8") for x in range(len(board))]:
+            if data in [str(x+1).encode(encoding="UTF-8") for x in range(7)]:
                 break
             await co_send(b"Enter a valid column|send", client)
         print(f"Received {data} from {client}, C4")
         state = connect(board, data, clients.get(client))
-        row = ""
-        for i in range(len(board)):
-            row += board[i]
-            if (i+1) % 7 == 0:
-                print(row)
-                print(i)
-                row = ""
         if data == "close":
             break
         board = state
+        row = ""
+        for i in range(len(board)):
+            row += board[i] + " "
+            if (i+1) % 7 == 0:
+                row += "|wait"
+                await co_send(bytes(row, encoding="UTF-8"), client)
+                await asyncio.sleep(0.001)
+                row = ""
+        row += "|send"
+        await co_send(bytes(row, encoding="UTF-8"), client)
+
 
 async def main():
     tasks = set()

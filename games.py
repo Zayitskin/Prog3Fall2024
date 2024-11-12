@@ -78,6 +78,13 @@ def ttt(board, move, number):
 
 def connect(board, data, player):
   data = int(data.decode(encoding="UTF-8"))-1
+  c = 0
+  while True:
+    if board[data + (c*7)] == "_":
+      board[data + (c*7)] = str(player)
+      break
+    c += 1
+  print(board)
   return board
 
 # Whisper Down the Valley
@@ -125,4 +132,4 @@ def wdtv(mode, inp):
     print(output)
     wdtv(mode, input('guess: '))
 
-wdtv(int(input('type 0 for anagram mode or 1 for shift mode: ')), input('type a word or phrase: '))
+#wdtv(int(input('type 0 for anagram mode or 1 for shift mode: ')), input('type a word or phrase: '))
