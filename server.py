@@ -24,7 +24,7 @@ global_board = [
     ]
 
 def client_connect(username):
-    clients[username] = len((clients.keys()))
+    clients[username] = len(clients.keys())+1
     print(clients.get(username))
 
 async def server_select(client, tasks, username):
@@ -136,7 +136,8 @@ async def main():
                 if username:
                     username = username.decode(encoding="UTF-8")
                     break
-            client_connect(username)
+            if not clients.get(username):
+                client_connect(username)
             task: asyncio.Task = asyncio.create_task(server_select(client, tasks, username))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
