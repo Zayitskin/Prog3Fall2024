@@ -23,7 +23,11 @@ global_board = [
     '_', '_', '_', '_', '_', '_', '_'
     ]
 
-async def server_select(client, tasks):
+def client_connect(username):
+    clients[username] = len((clients.keys()))
+    print(clients.get(username))
+
+async def server_select(client, tasks, username):
     msg = b"Choose a service: \n1 RPS \n2 TTT \n3 C4|send"
     while True:
         await co_send(msg, client)
@@ -42,7 +46,7 @@ async def server_select(client, tasks):
             await co_send(b"You chose TTT|send", client)
             break
         elif response == b"3":
-            task: asyncio.Task = asyncio.create_task(serve_C4(client))
+            task: asyncio.Task = asyncio.create_task(serve_C4(client, username))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
             await co_send(b"You chose C4|send", client)
@@ -90,7 +94,7 @@ async def serve_TTT(client1, client2):
         if data == "close":
             break
 
-async def serve_C4(client):
+async def serve_C4(client, username):
     global global_board
     board = list(global_board)
     while True:
@@ -100,7 +104,7 @@ async def serve_C4(client):
                 break
             await co_send(b"Enter a valid column|send", client)
         print(f"Received {data} from {client}, C4")
-        state = connect(board, data, clients.get(client))
+        state = connect(board, data, clients.get(username))
         if data == "close":
             break
         board = state
@@ -125,9 +129,15 @@ async def main():
         print(f"Server listening on {ADDR}:{PORT}")
         while True:
             client, addr = await co_accept(sock)
-            clients[client] = len(clients)
             print(f"connected to {addr}")
-            task: asyncio.Task = asyncio.create_task(server_select(client, tasks))
+            username = None
+            while True:
+                username = await co_recv(1024, client)
+                if username:
+                    username = username.decode(encoding="UTF-8")
+                    break
+            client_connect(username)
+            task: asyncio.Task = asyncio.create_task(server_select(client, tasks, username))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
 

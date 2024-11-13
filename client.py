@@ -1,6 +1,7 @@
 import socket
 
 from games import print_ttt
+from server import clients
 
 ADDR = "127.0.0.1"
 PORT = 1234
@@ -10,6 +11,16 @@ def server_connect():
         sock.connect((ADDR, PORT))
         print(f"Server found. Connecting to {ADDR}:{PORT}")
         send = b""
+        
+        while True:
+                send = bytes(input("Enter your username: "), encoding="UTF-8")
+                if send:
+                    confirm = input(f"Your username is {send.decode(encoding='UTF-8')}? Y/N ").lower()
+                    if confirm == "yes" or confirm == "y":
+                        sock.send(send)
+                        break
+                print("Enter something. Anything at all. Please. I crave inputs.")
+
         while send != b"close":
             recv = sock.recv(1024).decode(encoding="UTF-8")
             recv = recv.split("|")
