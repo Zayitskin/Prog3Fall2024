@@ -93,7 +93,7 @@ def connect(board, data, player):
       break
     c -= 1
     if c == -4:
-      return b"Enter a valid column"
+      return b"Enter a valid column|send"
   print(board)
   return board
 

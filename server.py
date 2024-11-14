@@ -14,15 +14,6 @@ ADDR = ""
 PORT = 1234
 clients = {}
 
-global_board = [
-    '_', '_', '_', '_', '_', '_', '_',
-    '_', '_', '_', '_', '_', '_', '_',
-    '_', '_', '_', '_', '_', '_', '_',
-    '_', '_', '_', '_', '_', '_', '_',
-    '_', '_', '_', '_', '_', '_', '_',
-    '_', '_', '_', '_', '_', '_', '_'
-    ]
-
 def client_connect(username):
     clients[username] = len(clients.keys())+1
     print(clients.get(username))
@@ -96,7 +87,14 @@ async def serve_TTT(client1):
             counter += 1
 
 async def serve_C4(client, username):
-    global global_board
+    global_board = [
+    '_', '_', '_', '_', '_', '_', '_',
+    '_', '_', '_', '_', '_', '_', '_',
+    '_', '_', '_', '_', '_', '_', '_',
+    '_', '_', '_', '_', '_', '_', '_',
+    '_', '_', '_', '_', '_', '_', '_',
+    '_', '_', '_', '_', '_', '_', '_'
+    ]
     board = list(global_board)
     while True:
         while True:
@@ -112,6 +110,7 @@ async def serve_C4(client, username):
         if data == "close":
             break
         board = state
+        # is win statement here
         row = ""
         for i in range(len(board)):
             row += board[i] + " "
@@ -142,7 +141,7 @@ async def main():
                     break
             if not clients.get(username):
                 client_connect(username)
-            task: asyncio.Task = asyncio.create_task(server_select(client, tasks, username))
+            task = asyncio.create_task(server_select(client, tasks, username))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
 
