@@ -123,8 +123,6 @@ async def serve_C4(client, username):
             break
         board = state
         # is win statement here
-        
-
 
 async def main():
     tasks = set()
