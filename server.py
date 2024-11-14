@@ -106,6 +106,9 @@ async def serve_C4(client, username):
             await co_send(b"Enter a valid column|send", client)
         print(f"Received {data} from {client}, C4")
         state = connect(board, data, clients.get(username))
+        if isinstance(state, bytes):
+            await co_send(state, client)
+            continue
         if data == "close":
             break
         board = state

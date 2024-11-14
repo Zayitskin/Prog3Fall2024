@@ -86,12 +86,14 @@ def ttt(board, move, number):
 
 def connect(board, data, player):
   data = int(data.decode(encoding="UTF-8"))-1
-  c = 0
+  c = 5
   while True:
     if board[data + (c*7)] == "_":
       board[data + (c*7)] = str(player)
       break
-    c += 1
+    c -= 1
+    if c == -4:
+      return b"Enter a valid column"
   print(board)
   return board
 
