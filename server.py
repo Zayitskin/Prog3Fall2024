@@ -10,7 +10,7 @@ from sock_coro import co_accept
 from sock_coro import co_recv
 from sock_coro import co_send
 
-ADDR = "127.0.0.1"
+ADDR = ""
 PORT = 1234
 clients = {}
 
