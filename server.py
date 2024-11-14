@@ -64,35 +64,36 @@ async def serve_RPS(client):
         if data == "close":
             break
 
-async def serve_TTT(client1, client2):
+async def serve_TTT(client1):
     while True:
         board = "_" * 9
         end = False
         counter = 0
+        await co_recv(1024, client1)
         while not end:
-            if counter % 2 == 0:
-              current_client = client1 
-            else:
-                current_client = client2
-                data = await co_recv(1024, current_client)
-                print(f"Received {data} from {current_client}, TTT")
-                await co_send(bytes(f"{board}| print ttt",encoding="UTF-8"), current_client)
-                move = await co_send(bytes(f"Choose your move|send",encoding="UTF-8"), current_client)
-                print(f"Received {data} from {current_client}, TTT")
-                stats = ttt(board, move, counter)
-                if stats[0]:
-                    if counter % 2 == 0:
-                        winner = client1 
-                        loser = client2 
-                    else:
-                        winner = client2
-                        loser = client1 
-                    await co_send(bytes(f"You won :)",encoding="UTF-8"), winner)
-                    await co_send(bytes(f"You Lost :(",encoding="UTF-8"), loser)
-                    end = True
-                counter += 1
-        if data == "close":
-            break
+            # if counter % 2 == 0:
+            current_client = client1 
+            # else:
+            #     current_client = client2
+            await co_send(bytes(f"{board}|print ttt",encoding="UTF-8"), current_client)
+            await co_send(bytes(f"Choose your move|send",encoding="UTF-8"), current_client)
+            move = await co_recv(1024, current_client)
+            print(f"Received {move} from {current_client}, TTT")
+            print(board)
+            stats = ttt(board, int(move), counter)
+            board = stats[1]
+            if stats[0] is True:
+                # if counter % 2 == 0:
+                #     winner = client1 
+                #     loser = client2 
+                # else:
+                #     winner = client2
+                #     loser = client1 
+                #     await co_send(bytes(f"You won :)",encoding="UTF-8"), winner)
+                #     await co_send(bytes(f"You Lost :(",encoding="UTF-8"), loser)
+                await co_send(bytes(f"{board}|print ttt",encoding="UTF-8"), current_client)
+                end = True
+            counter += 1
 
 async def serve_C4(client, username):
     global global_board

@@ -43,8 +43,11 @@ def is_win(layout):
     """Determines if there is a vertical, horizontal, or diagonal win"""
     r1, r2, r3 = layout[:3], layout[3:6], layout[6:]
     rows = [r1, r2, r3]
+    print(rows)
     cols = list(zip(r1, r2, r3))
+    print(cols)
     diags = [(r1[0], r2[1], r3[2]), (r1[2], r2[1], r3[0])]
+    print(diags)
     for g in rows + cols + diags:
       if '_' not in g and len(set(g)) == 1:
         return True
@@ -53,11 +56,12 @@ def is_win(layout):
 
 def print_ttt(layout):
     """Pretty print the board"""
+    layout = [x for x in layout]
     printed = ""
     for space in range(len(layout)):
       if layout[space] == "_":
         printed += str(space + 1)
-      else:
+      elif layout[space] in ["X", "O"]:
         printed += layout[space]
     print()
     for i in range(0, 9, 3):
@@ -67,14 +71,18 @@ def print_ttt(layout):
     print()
 
 def ttt(board, move, number):
+  board = [x for x in board]
   if number%2 == 1:
     board[move - 1] = 'X'
   elif number%2 == 0:
     board[move - 1] = 'O'
-    if is_win(board):
-      return True, board, number
-    else:
-      return False, board, number
+  board2 = ""
+  for x in board:
+    board2 += x
+  if is_win(board):
+    return True, board2, number
+  else:
+    return False, board2, number
 
 def connect(board, data, player):
   data = int(data.decode(encoding="UTF-8"))-1
