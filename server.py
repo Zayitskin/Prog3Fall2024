@@ -40,7 +40,7 @@ async def server_select(client, tasks, username):
             task: asyncio.Task = asyncio.create_task(serve_C4(client, username))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
-            await co_send(b"You chose C4|send", client)
+            await co_send(b"You chose C4|wait", client)
             break
         else:
             msg = b"Invalid Option, choose a service: \n1 RPS \n2 TTT \n3 C4"
@@ -97,20 +97,6 @@ async def serve_C4(client, username):
     ]
     board = list(global_board)
     while True:
-        while True:
-            data = await co_recv(1024, client)
-            if data in [str(x+1).encode(encoding="UTF-8") for x in range(7)]:
-                break
-            await co_send(b"Enter a valid column|send", client)
-        print(f"Received {data} from {client}, C4")
-        state = connect(board, data, clients.get(username))
-        if isinstance(state, bytes):
-            await co_send(state, client)
-            continue
-        if data == "close":
-            break
-        board = state
-        # is win statement here
         row = ""
         for i in range(len(board)):
             row += board[i] + " "
@@ -121,6 +107,23 @@ async def serve_C4(client, username):
                 row = ""
         row += "|send"
         await co_send(bytes(row, encoding="UTF-8"), client)
+        while True:
+            data = await co_recv(1024, client)
+            if data == b"board" or data in [str(x+1).encode(encoding="UTF-8") for x in range(7)]:
+                break
+            await co_send(b"Enter a valid column|send", client)
+        if data == b"board":
+            continue
+        print(f"Received {data} from {client}, C4")
+        state = connect(board, data, clients.get(username))
+        if isinstance(state, bytes):
+            await co_send(state, client)
+            continue
+        if data == "close":
+            break
+        board = state
+        # is win statement here
+        
 
 
 async def main():
