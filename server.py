@@ -42,6 +42,12 @@ async def server_select(client, tasks, username):
             tasks.add(task)
             await co_send(b"You chose C4|wait", client)
             break
+        # elif response == b"4":
+        #     task: asyncio.Task = asyncio.create_task(serve_WDTV(client, username))
+        #     task.add_done_callback(tasks.discard)
+        #     tasks.add(task)
+        #     await co_send(b"You chose C4|wait", client)
+        #     break
         else:
             msg = b"Invalid Option, choose a service: \n1 RPS \n2 TTT \n3 C4\n4 WDTV"
 
@@ -128,6 +134,7 @@ async def serve_C4(client1, client2, player1, player2):
         board = state
         active = (active + 1) % 2
         # is win statement here
+    
 
 async def main():
     tasks = set()

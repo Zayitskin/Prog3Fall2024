@@ -110,8 +110,8 @@ def c4_win(board):
     diags.append([board[6-x], board[6-x+6], board[6-x+12], board[6-x+18]])
     diags.append([board[13-x], board[13-x+6], board[13-x+12], board[13-x+18]])
     diags.append([board[20-x], board[20-x+6], board[20-x+12], board[20-x+18]])
-  print(diags)
-  for four in horiz, vert, diags:
+  # print(diags)
+  for four in horiz + vert + diags:
     if '_' not in four and len(set(four)) == 1:
       return True
   return False
@@ -175,11 +175,11 @@ def wdtv(mode, inp):
     wdtv(mode, input('guess: '))
 
 #wdtv(int(input('type 0 for anagram mode or 1 for shift mode: ')), input('type a word or phrase: '))
-# c4_win([
+# print(c4_win([
 #     '11', '12', '13', '14', '15', '16', '17',
-#     '21', '22', '23', '24', '25', '26', '27',
-#     '31', '32', '33', '34', '35', '36', '37',
-#     '41', '42', '43', '44', '45', '46', '47',
+#     '12', '22', '23', '24', '25', '26', '27',
+#     '13', '32', '33', '34', '35', '36', '37',
+#     '14', '42', '43', '44', '45', '46', '47',
 #     '51', '52', '53', '54', '55', '56', '57',
 #     '61', '62', '63', '64', '65', '66', '67'
-#     ])
+#     ]))
