@@ -12,11 +12,14 @@ from sock_coro import co_send
 
 ADDR = ""
 PORT = 1234
-clients = {}
+clients = {"Luke":{"Noah":{"TTT":(0,0,0),"C4":(0,0,0),"RPS":(0,0,0)}},
+           "Noah":{"Luke":{"TTT":(0,0,0),"C4":(0,0,0),"RPS":(0,0,0)}}
+          }
 
 def client_connect(username):
-    clients[username] = len(clients.keys())+1
-    print(clients.get(username))
+    for name in clients:
+        clients[name][username] = {"TTT":(0,0,0),"C4":(0,0,0),"RPS":(0,0,0)}
+    clients[username] = {name:{"TTT":(0,0,0),"C4":(0,0,0),"RPS":(0,0,0)} for name in clients}
 
 async def server_select(client, tasks, username):
     msg = b"Choose a service: \n1 RPS \n2 TTT \n3 C4\n4 WDTV|send"
