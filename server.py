@@ -19,7 +19,7 @@ def client_connect(username):
     print(clients.get(username))
 
 async def server_select(client, tasks, username):
-    msg = b"Choose a service: \n1 RPS \n2 TTT \n3 C4|send"
+    msg = b"Choose a service: \n1 RPS \n2 TTT \n3 C4\n4 WDTV|send"
     while True:
         await co_send(msg, client)
         response = await co_recv(1024, client)
@@ -43,7 +43,7 @@ async def server_select(client, tasks, username):
             await co_send(b"You chose C4|wait", client)
             break
         else:
-            msg = b"Invalid Option, choose a service: \n1 RPS \n2 TTT \n3 C4"
+            msg = b"Invalid Option, choose a service: \n1 RPS \n2 TTT \n3 C4\n4 WDTV"
 
 async def serve_RPS(client):
     while True:
@@ -86,7 +86,7 @@ async def serve_TTT(client1):
                 end = True
             counter += 1
 
-async def serve_C4(client, username):
+async def serve_C4(client1, client2, player1, player2):
     global_board = [
     '_', '_', '_', '_', '_', '_', '_',
     '_', '_', '_', '_', '_', '_', '_',
@@ -96,32 +96,37 @@ async def serve_C4(client, username):
     '_', '_', '_', '_', '_', '_', '_'
     ]
     board = list(global_board)
+    players = [player1, player2]
+    clients = [client1, client2]
+    active = 0
     while True:
+        active_player = players[active]
+        active_client = clients[active]
         row = ""
         for i in range(len(board)):
             row += board[i] + " "
             if (i+1) % 7 == 0:
                 row += "|wait"
-                await co_send(bytes(row, encoding="UTF-8"), client)
+                await co_send(bytes(row, encoding="UTF-8"), active_client)
                 await asyncio.sleep(0.001)
                 row = ""
-        row += "|send"
-        await co_send(bytes(row, encoding="UTF-8"), client)
+        await co_send(bytes(row, encoding="UTF-8"), active_client)
         while True:
-            data = await co_recv(1024, client)
+            data = await co_recv(1024, client1)
             if data == b"board" or data in [str(x+1).encode(encoding="UTF-8") for x in range(7)]:
                 break
-            await co_send(b"Enter a valid column|send", client)
+            await co_send(b"Enter a valid column|send", active_client)
         if data == b"board":
             continue
-        print(f"Received {data} from {client}, C4")
-        state = connect(board, data, clients.get(username))
+        print(f"Received {data} from {client1}, C4")
+        state = connect(board, data, clients.get(active_player))
         if isinstance(state, bytes):
-            await co_send(state, client)
+            await co_send(state, active_client)
             continue
         if data == "close":
             break
         board = state
+        active = (active + 1) % 2
         # is win statement here
 
 async def main():
