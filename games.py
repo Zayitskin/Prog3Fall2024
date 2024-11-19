@@ -83,6 +83,38 @@ def ttt(board, move, number):
     return True, board2, number
   else:
     return False, board2, number
+  
+def c4_win(board):
+  fours = []
+  r1, r2, r3, r4, r5, r6 = board[:7], board[7:14], board[14:21], board[21:28], board[28:35], board[35:]
+  horiz = []
+  for row in r1, r2, r3, r4, r5, r6:
+    horiz.append(row[:4])
+    horiz.append(row[1:5])
+    horiz.append(row[2:6])
+    horiz.append(row[3:])
+  # print(horiz)
+  cols = list(zip(r1, r2, r3, r4, r5, r6))
+  vert = []
+  for col in cols:
+    vert.append(col[:4])
+    vert.append(col[1:5])
+    vert.append(col[2:6])
+    vert.append(col[3:])
+  # print(vert)
+  diags = []
+  for x in range(4):
+    diags.append([board[x], board[x+8], board[x+16], board[x+24]])
+    diags.append([board[x+7], board[x+15], board[x+23], board[x+31]])
+    diags.append([board[x+14], board[x+22], board[x+30], board[x+38]])
+    diags.append([board[6-x], board[6-x+6], board[6-x+12], board[6-x+18]])
+    diags.append([board[13-x], board[13-x+6], board[13-x+12], board[13-x+18]])
+    diags.append([board[20-x], board[20-x+6], board[20-x+12], board[20-x+18]])
+  print(diags)
+  for four in horiz, vert, diags:
+    if '_' not in four and len(set(four)) == 1:
+      return True
+  return False
 
 def connect(board, data, player):
   data = int(data.decode(encoding="UTF-8"))-1
@@ -143,3 +175,11 @@ def wdtv(mode, inp):
     wdtv(mode, input('guess: '))
 
 #wdtv(int(input('type 0 for anagram mode or 1 for shift mode: ')), input('type a word or phrase: '))
+# c4_win([
+#     '11', '12', '13', '14', '15', '16', '17',
+#     '21', '22', '23', '24', '25', '26', '27',
+#     '31', '32', '33', '34', '35', '36', '37',
+#     '41', '42', '43', '44', '45', '46', '47',
+#     '51', '52', '53', '54', '55', '56', '57',
+#     '61', '62', '63', '64', '65', '66', '67'
+#     ])
