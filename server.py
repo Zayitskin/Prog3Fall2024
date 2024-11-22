@@ -1,6 +1,7 @@
 import random
 import asyncio
 import socket
+import json
 
 from games import rps
 from games import ttt
@@ -12,9 +13,12 @@ from sock_coro import co_send
 
 ADDR = "127.0.0.1"
 PORT = 1234
+
 clients = {"Luke":{"Noah":{"TTT":(0,0,0),"C4":(0,0,0),"RPS":(0,0,0)}},
            "Noah":{"Luke":{"TTT":(0,0,0),"C4":(0,0,0),"RPS":(0,0,0)}}
           }
+
+    
 
 def client_connect(username):
     for name in clients:
@@ -149,9 +153,16 @@ async def serve_C4(client1, client2, player1, player2):
         active = (active + 1) % 2
         # is win statement here
     
+async def do_save():
+    print(clients)
+    with open("client.txt", "w") as f:
+        json.dump(clients, f)
 
 async def main():
+    global clients
     tasks = set()
+    with open("client.txt", "r") as f:
+        clients = json.load(f)
     with socket.socket() as sock:
         sock.settimeout(0)
         sock.bind((ADDR, PORT))
@@ -171,6 +182,7 @@ async def main():
             task = asyncio.create_task(server_select(client, tasks, username))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
+            await do_save()
 
 if __name__ == "__main__":
     asyncio.run(main())
