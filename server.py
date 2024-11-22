@@ -21,29 +21,40 @@ def client_connect(username):
         clients[name][username] = {"TTT":(0,0,0),"C4":(0,0,0),"RPS":(0,0,0)}
     clients[username] = {name:{"TTT":(0,0,0),"C4":(0,0,0),"RPS":(0,0,0)} for name in clients}
 
+async def waiting_room(game, client):
+    while True:
+        await co_send(f"You chose {game}. Waiting for someone to accept.|wait", client)
+        await asyncio.sleep(0.6)
+        await co_send(f"You chose {game}. Waiting for someone to accept..|wait", client)
+        await asyncio.sleep(0.6)
+        await co_send(f"You chose {game}. Waiting for someone to accept...|wait", client)
+        await asyncio.sleep(0.6)
+
 async def server_select(client, tasks, username):
-    msg = b"Choose a service: \n1 RPS \n2 TTT \n3 C4\n4 WDTV|send"
+    msg = b"Choose a game: \n1 RPS \n2 TTT \n3 C4\n4 WDTV|send"
     while True:
         await co_send(msg, client)
         response = await co_recv(1024, client)
         print(response.decode(encoding="UTF-8"))
         if response == b"1":
+            waiting_room()
             task: asyncio.Task = asyncio.create_task(serve_RPS(client))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
             await co_send(b"You chose RPS|send", client)
             break
         elif response == b"2":
+            waiting_room()
             task: asyncio.Task = asyncio.create_task(serve_TTT(client))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
             await co_send(b"You chose TTT|send", client)
             break
         elif response == b"3":
+            waiting_room()
             task: asyncio.Task = asyncio.create_task(serve_C4(client, username))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
-            await co_send(b"You chose C4|wait", client)
             break
         # elif response == b"4":
         #     task: asyncio.Task = asyncio.create_task(serve_WDTV(client, username))
@@ -52,7 +63,7 @@ async def server_select(client, tasks, username):
         #     await co_send(b"You chose C4|wait", client)
         #     break
         else:
-            msg = b"Invalid Option, choose a service: \n1 RPS \n2 TTT \n3 C4\n4 WDTV"
+            msg = b"Invalid Option, choose a game: \n1 RPS \n2 TTT \n3 C4\n4 WDTV"
 
 async def serve_RPS(client):
     while True:
