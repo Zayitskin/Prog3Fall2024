@@ -25,7 +25,8 @@ def client_connect(username):
         clients[name][username] = {"TTT":(0,0,0),"C4":(0,0,0),"RPS":(0,0,0)}
     clients[username] = {name:{"TTT":(0,0,0),"C4":(0,0,0),"RPS":(0,0,0)} for name in clients}
 
-async def waiting_room(game, client):
+async def waiting_room(game, username, client):
+    challenges.append(game, username)
     while True:
         await co_send(f"You chose {game}. Waiting for someone to accept.|wait", client)
         await asyncio.sleep(0.6)
@@ -41,21 +42,21 @@ async def server_select(client, tasks, username):
         response = await co_recv(1024, client)
         print(response.decode(encoding="UTF-8"))
         if response == b"1":
-            waiting_room()
+            waiting_room("RPS", username, client)
             task: asyncio.Task = asyncio.create_task(serve_RPS(client))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
             await co_send(b"You chose RPS|send", client)
             break
         elif response == b"2":
-            waiting_room()
+            waiting_room("TTT", username, client)
             task: asyncio.Task = asyncio.create_task(serve_TTT(client))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
             await co_send(b"You chose TTT|send", client)
             break
         elif response == b"3":
-            waiting_room()
+            waiting_room("C4", username, client)
             task: asyncio.Task = asyncio.create_task(serve_C4(client, username))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
