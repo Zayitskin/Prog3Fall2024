@@ -70,8 +70,13 @@ async def server_select(client, tasks, username):
         #     await co_send(b"You chose C4|wait", client)
         #     break
         elif response == b"5":
+            await co_send(("\n|wait").encode(encoding="UTF-8"), client)
+            await asyncio.sleep(0.001)
             for game, player in challenges:
                 await co_send((f"{player} is waiting to play {game}.|wait").encode(encoding="UTF-8"), client)
+                await asyncio.sleep(0.001)
+            await co_send(("\n|wait").encode(encoding="UTF-8"), client)
+            await asyncio.sleep(0.001)
         else:
             msg = b"Invalid Option, choose a game: \n1 RPS \n2 TTT \n3 C4\n4 WDTV\n5 Challenges|send"
 
