@@ -1,4 +1,5 @@
 import socket
+import os
 
 from games import print_ttt
 from server import clients
@@ -11,7 +12,7 @@ def server_connect():
         sock.connect((ADDR, PORT))
         print(f"Server found. Connecting to {ADDR}:{PORT}")
         send = b""
-        
+
         while True:
                 send = bytes(input("Enter your username: "), encoding="UTF-8")
                 if send:
@@ -29,6 +30,8 @@ def server_connect():
             elif len(recv) == 1:
                 data = recv[0]
                 command = "send"
+            if command == "clear":
+                os.system("clear")
             print(data)
             if command == "send":
                 while True:

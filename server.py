@@ -30,11 +30,11 @@ def client_connect(username):
 async def waiting_room(game, username, client):
     challenges.append((game, username))
     while True:
-        await co_send((f"You chose {game}. Waiting for someone to accept.|wait").encode(encoding="UTF-8"), client)
+        await co_send((f"You chose {game}. Waiting for someone to accept.|clear").encode(encoding="UTF-8"), client)
         await asyncio.sleep(0.6)
-        await co_send((f"You chose {game}. Waiting for someone to accept..|wait").encode(encoding="UTF-8"), client)
+        await co_send((f"You chose {game}. Waiting for someone to accept..|clear").encode(encoding="UTF-8"), client)
         await asyncio.sleep(0.6)
-        await co_send((f"You chose {game}. Waiting for someone to accept...|wait").encode(encoding="UTF-8"), client)
+        await co_send((f"You chose {game}. Waiting for someone to accept...|clear").encode(encoding="UTF-8"), client)
         await asyncio.sleep(0.6)
 
 async def server_select(client, tasks, username):
