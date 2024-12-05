@@ -5,7 +5,7 @@ from games import print_ttt
 from server import clients
 
 ADDR = "127.0.0.1"
-PORT = 1234
+PORT = 1235
 
 def server_connect():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:

@@ -12,7 +12,7 @@ from sock_coro import co_recv
 from sock_coro import co_send
 
 ADDR = "127.0.0.1"
-PORT = 1234
+PORT = 1235
 
 challenges = []
 
@@ -27,42 +27,41 @@ def client_connect(username):
         clients[name][username] = {"TTT":(0,0,0),"C4":(0,0,0),"RPS":(0,0,0)}
     clients[username] = {name:{"TTT":(0,0,0),"C4":(0,0,0),"RPS":(0,0,0)} for name in clients}
 
-async def waiting_room(game, username, client):
+async def waiting_room(game, username, client, tasks):
     challenges.append((game, username))
+    print("testing")
     while True:
-        await co_send((f"You chose {game}. Waiting for someone to accept.|clear").encode(encoding="UTF-8"), client)
-        await asyncio.sleep(0.6)
-        await co_send((f"You chose {game}. Waiting for someone to accept..|clear").encode(encoding="UTF-8"), client)
-        await asyncio.sleep(0.6)
-        await co_send((f"You chose {game}. Waiting for someone to accept...|clear").encode(encoding="UTF-8"), client)
-        await asyncio.sleep(0.6)
+        await co_send((f"You chose {game}. Waiting for someone to accept.|wait").encode(encoding="UTF-8"), client)
+        await co_send(b"Type 'back' to return to the game menu.|send", client)
+        response = await co_recv(1024, client)
+        print(response.decode(encoding="UTF-8"))
 
 async def server_select(client, tasks, username):
     msg = b"Choose a game: \n1 RPS \n2 TTT \n3 C4\n4 WDTV\n5 Challenges|send"
+    print(tasks)
     while True:
+        print("task")
         await co_send(msg, client)
         response = await co_recv(1024, client)
         print(response.decode(encoding="UTF-8"))
         if response == b"1":
-            await waiting_room("RPS", username, client)
-            task: asyncio.Task = asyncio.create_task(serve_RPS(client))
+            task: asyncio.Task = asyncio.create_task(waiting_room("RPS", username, client, tasks))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
-            await co_send(b"You chose RPS|send", client)
-            break
+            return
         elif response == b"2":
-            await waiting_room("TTT", username, client)
-            task: asyncio.Task = asyncio.create_task(serve_TTT(client))
+            task: asyncio.Task = asyncio.create_task(waiting_room("TTT", username, client, tasks))
             task.add_done_callback(tasks.discard)
             tasks.add(task)
-            await co_send(b"You chose TTT|send", client)
-            break
+            return
         elif response == b"3":
-            await waiting_room("C4", username, client)
-            task: asyncio.Task = asyncio.create_task(serve_C4(client, username))
+            print("yaya")
+            task: asyncio.Task = asyncio.create_task(waiting_room("C4", username, client, tasks))
+            print("task created")
             task.add_done_callback(tasks.discard)
+            print("finish task")
             tasks.add(task)
-            break
+            return
         # elif response == b"4":
         #     task: asyncio.Task = asyncio.create_task(serve_WDTV(client, username))
         #     task.add_done_callback(tasks.discard)
