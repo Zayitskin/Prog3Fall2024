@@ -12,7 +12,7 @@ from sock_coro import co_recv
 from sock_coro import co_send
 
 ADDR = "127.0.0.1"
-PORT = 1235
+PORT = 1234
 
 challenges = []
 
@@ -31,9 +31,11 @@ async def waiting_room(game, username, client, tasks):
     challenges.append((game, username))
     print("testing")
     while True:
+        await asyncio.sleep(0.001)
         await co_send((f"You chose {game}. Waiting for someone to accept.|wait").encode(encoding="UTF-8"), client)
+        await asyncio.sleep(0.001)
         await co_send(b"Type 'back' to return to the game menu.|send", client)
-        response = await co_recv(1024, client)
+        response = await co_recv(4096, client)
         print(response.decode(encoding="UTF-8"))
 
 async def server_select(client, tasks, username):
@@ -42,7 +44,7 @@ async def server_select(client, tasks, username):
     while True:
         print("task")
         await co_send(msg, client)
-        response = await co_recv(1024, client)
+        response = await co_recv(4096, client)
         print(response.decode(encoding="UTF-8"))
         if response == b"1":
             task: asyncio.Task = asyncio.create_task(waiting_room("RPS", username, client, tasks))
@@ -81,7 +83,7 @@ async def server_select(client, tasks, username):
 
 async def serve_RPS(client):
     while True:
-        data = await co_recv(1024, client)
+        data = await co_recv(4096, client)
         print(f"Received {data} from {client}, RPS")
         options = ['rock', 'paper', 'scissors']
         result = rps(data.decode(encoding="UTF-8"), options[random.randint(0,2)])
@@ -94,7 +96,7 @@ async def serve_TTT(client1):
         board = "_" * 9
         end = False
         counter = 0
-        await co_recv(1024, client1)
+        await co_recv(4096, client1)
         while not end:
             # if counter % 2 == 0:
             current_client = client1 
@@ -102,7 +104,7 @@ async def serve_TTT(client1):
             #     current_client = client2
             await co_send(bytes(f"{board}|print ttt",encoding="UTF-8"), current_client)
             await co_send(bytes(f"Choose your move|send",encoding="UTF-8"), current_client)
-            move = await co_recv(1024, current_client)
+            move = await co_recv(4096, current_client)
             print(f"Received {move} from {current_client}, TTT")
             print(board)
             stats = ttt(board, int(move), counter)
@@ -146,7 +148,7 @@ async def serve_C4(client1, client2, player1, player2):
                 row = ""
         await co_send(bytes(row, encoding="UTF-8"), active_client)
         while True:
-            data = await co_recv(1024, client1)
+            data = await co_recv(4096, client1)
             if data == b"board" or data in [str(x+1).encode(encoding="UTF-8") for x in range(7)]:
                 break
             await co_send(b"Enter a valid column|send", active_client)
@@ -183,7 +185,7 @@ async def main():
             print(f"connected to {addr}")
             username = None
             while True:
-                username = await co_recv(1024, client)
+                username = await co_recv(4096, client)
                 if username:
                     username = username.decode(encoding="UTF-8")
                     break

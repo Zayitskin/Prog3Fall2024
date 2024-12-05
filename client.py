@@ -5,7 +5,7 @@ from games import print_ttt
 from server import clients
 
 ADDR = "127.0.0.1"
-PORT = 1235
+PORT = 1234
 
 def server_connect():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
@@ -23,7 +23,7 @@ def server_connect():
                 print("Enter something. Anything at all. Please. I crave inputs.")
 
         while send != b"close":
-            recv = sock.recv(1024).decode(encoding="UTF-8")
+            recv = sock.recv(4096).decode(encoding="UTF-8")
             recv = recv.split("|")
             if len(recv) == 2:
                 data, command = recv[0], recv[1]
